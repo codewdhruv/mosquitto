@@ -1,0 +1,35 @@
+pipeline:
+  name: mosquitto
+  identifier: mosquitto
+  projectIdentifier: DhrubaCI
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: dhrubaaccountconnector
+        repoName: mosquitto
+        build: <+input>
+  stages:
+    - stage:
+        name: coverity scan
+        identifier: coverity_scan
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: dependencies
+                  identifier: dependencies
+                  spec:
+                    shell: Sh
+                    command: sudo apt-get install -y libcjson-dev libsqlite3-dev libssl-dev uthash-dev
