@@ -33,3 +33,19 @@ pipeline:
                   spec:
                     shell: Sh
                     command: sudo apt-get install -y libcjson-dev libsqlite3-dev libssl-dev uthash-dev
+              - step:
+                  type: Plugin
+                  name: coverity scan
+                  identifier: coverity_scan
+                  spec:
+                    connectorRef: DhrubajyotiDocker
+                    image: plugins/github-actions
+                    privileged: true
+                    settings:
+                      uses: vapier/coverity-scan-action@v1
+                      with:
+                        build_language: cxx
+                        project: eclipse/mosquitto
+                        token: ${{ secrets.COVERITY_SCAN_TOKEN }}
+                        email: ${{ secrets.COVERITY_SCAN_EMAIL }}
+                        command: make binary
